@@ -1,3 +1,4 @@
+successfully downloaded text file (SHA: 371ad33f70d319a64ce31088a298ba50e7b6b4e0)
 #科学插件调整
 CONFIG_PACKAGE_luci-app-homeproxy=y
 #增加插件
@@ -189,3 +190,12 @@ CONFIG_PACKAGE_lsblk=y
 # CONFIG_PACKAGE_kmod-usb-serial-cp210x=y
 # CONFIG_PACKAGE_kmod-usb-serial-ch341=y
 # CONFIG_PACKAGE_kmod-usb-acm=y
+
+# --- 8. ZIGBEE/THREAD USB DONGLE + HỖ TRỢ Ổ CỨNG NGOÀI (camera ghi hình) — ACTIVE ---
+CONFIG_PACKAGE_kmod-usb-serial-ch341=y
+CONFIG_PACKAGE_kmod-usb-serial-cp210x=y
+CONFIG_PACKAGE_kmod-usb-acm=y
+CONFIG_PACKAGE_kmod-fs-ext4=y
+CONFIG_PACKAGE_kmod-fs-vfat=y
+CONFIG_PACKAGE_kmod-fs-ntfs3=y
+CONFIG_PACKAGE_kmod-fs-exfat=y
