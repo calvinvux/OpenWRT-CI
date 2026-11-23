@@ -122,3 +122,70 @@ CONFIG_PACKAGE_usb-modeswitch=y
 CONFIG_PACKAGE_usbmuxd=y
 CONFIG_PACKAGE_usbutils=y
 CONFIG_PACKAGE_xz-utils=y
+
+# ==============================================================================
+# GÓI BỔ SUNG CHO LINK NN6000 V2 (IPQ6018 | 2GB RAM | 8GB eMMC) — nhánh main
+# ==============================================================================
+
+# --- 1. DOCKER & CONTAINER (Home Assistant) ---
+CONFIG_PACKAGE_dockerd=y
+CONFIG_PACKAGE_docker=y
+CONFIG_PACKAGE_docker-compose=y
+CONFIG_PACKAGE_containerd=y
+CONFIG_PACKAGE_runc=y
+CONFIG_PACKAGE_luci-app-dockerman=y
+CONFIG_PACKAGE_kmod-br-netfilter=y
+CONFIG_PACKAGE_kmod-ikconfig=y
+CONFIG_PACKAGE_kmod-nf-conntrack-netlink=y
+CONFIG_PACKAGE_kmod-veth=y
+
+# --- 2. VPN WIREGUARD + DUCKDNS + CHIA TẢI ĐA NHÂN ---
+# (kmod-wireguard đã có sẵn trong file gốc)
+CONFIG_PACKAGE_wireguard-tools=y
+CONFIG_PACKAGE_luci-proto-wireguard=y
+CONFIG_PACKAGE_irqbalance=y
+CONFIG_PACKAGE_ddns-scripts=y
+CONFIG_PACKAGE_ddns-scripts-services=y
+CONFIG_PACKAGE_luci-app-ddns=y
+
+# --- 3. ADGUARD HOME, CLOUDFLARE TUNNEL & MOSQUITTO MQTT (NATIVE) ---
+CONFIG_PACKAGE_adguardhome=y
+CONFIG_PACKAGE_cloudflared=y
+CONFIG_PACKAGE_luci-app-cloudflared=y
+CONFIG_PACKAGE_mosquitto-ssl=y
+CONFIG_PACKAGE_luci-app-mosquitto=y
+
+# --- 4. IPTV FPT QUA WI-FI (SMART TV / VLC - KHÔNG DÙNG ĐẦU THU STB) ---
+CONFIG_PACKAGE_udpxy=y
+CONFIG_PACKAGE_luci-app-udpxy=y
+
+# --- 5. CLOUD STORAGE RCLONE (Sao lưu cấu hình lên Cloud) ---
+CONFIG_PACKAGE_rclone=y
+CONFIG_PACKAGE_luci-app-rclone=y
+CONFIG_PACKAGE_rclone-ng=y
+CONFIG_PACKAGE_fuse-utils=y
+CONFIG_PACKAGE_kmod-fuse=y
+
+# --- 6. TIỆN ÍCH QUẢN TRỊ TỪ XA, WATCHCAT, BBR & CHẨN ĐOÁN MẠNG ---
+CONFIG_LUCI_LANG_en=y
+CONFIG_PACKAGE_openssh-sftp-server=y
+CONFIG_PACKAGE_luci-app-ttyd=y
+CONFIG_PACKAGE_watchcat=y
+CONFIG_PACKAGE_luci-app-watchcat=y
+CONFIG_PACKAGE_kmod-tcp-bbr=y
+CONFIG_PACKAGE_ca-certificates=y
+CONFIG_PACKAGE_ca-bundle=y
+CONFIG_PACKAGE_luci-ssl=y
+CONFIG_PACKAGE_curl=y
+CONFIG_PACKAGE_wget-ssl=y
+CONFIG_PACKAGE_nano=y
+CONFIG_PACKAGE_jq=y
+CONFIG_PACKAGE_htop=y
+CONFIG_PACKAGE_tcpdump=y
+CONFIG_PACKAGE_ethtool=y
+CONFIG_PACKAGE_lsblk=y
+
+# --- 7. DRIVER USB ZIGBEE / THREAD CHO HOME ASSISTANT (Bỏ dấu # nếu dùng) ---
+# CONFIG_PACKAGE_kmod-usb-serial-cp210x=y
+# CONFIG_PACKAGE_kmod-usb-serial-ch341=y
+# CONFIG_PACKAGE_kmod-usb-acm=y

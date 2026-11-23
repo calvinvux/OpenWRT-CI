@@ -51,3 +51,43 @@ if [[ "${WRT_TARGET^^}" == *"QUALCOMMAX"* ]]; then
 		echo "qualcommax set up nowifi successfully!"
 	fi
 fi
+
+# ==============================================================================
+# Tinh chỉnh tự động cho Link NN6000 v2 (LAN 192.168.5.0/24 + IPTV + Docker + BBR)
+# ==============================================================================
+
+# 1. Ép IP LAN mặc định thành 192.168.5.1 (192.168.5.0/24)
+sed -i "s/192\.168\.[0-9]*\.1/192.168.5.1/g" ./package/base-files/files/bin/config_generate
+
+# 2. Cờ Multicast & Docker Cgroups vào kernel config của qualcommax
+TARGET_KERNEL_CONFIG=$(find ./target/linux/qualcommax/ -maxdepth 1 -name "config-*" | sort -V | tail -n 1)
+if [ -f "$TARGET_KERNEL_CONFIG" ]; then
+    echo ">>> Áp dụng cờ Multicast & Docker Cgroups vào $TARGET_KERNEL_CONFIG"
+    cat >> "$TARGET_KERNEL_CONFIG" << 'EOF'
+CONFIG_IP_MULTICAST=y
+CONFIG_IP_ADVANCED_ROUTER=y
+CONFIG_IP_MROUTE=y
+CONFIG_IP_MROUTE_MULTIPLE_TABLES=y
+CONFIG_CGROUPS=y
+CONFIG_MEMCG=y
+CONFIG_CGROUP_SCHED=y
+CONFIG_FAIR_GROUP_SCHED=y
+CONFIG_NAMESPACES=y
+CONFIG_NET_NS=y
+CONFIG_PID_NS=y
+CONFIG_IPC_NS=y
+CONFIG_UTS_NS=y
+EOF
+fi
+
+# 3. Sysctl: IGMPv2 cho IPTV FPT, tắt rp_filter, BBR trên fq_codel, conntrack 64K
+mkdir -p ./package/base-files/files/etc
+cat >> ./package/base-files/files/etc/sysctl.conf << 'EOF'
+net.ipv4.conf.all.force_igmp_version=2
+net.ipv4.conf.default.force_igmp_version=2
+net.ipv4.conf.all.rp_filter=0
+net.ipv4.conf.default.rp_filter=0
+net.core.default_qdisc=fq_codel
+net.ipv4.tcp_congestion_control=bbr
+net.netfilter.nf_conntrack_max=65536
+EOF
