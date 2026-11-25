@@ -26,7 +26,6 @@ sed -i "s/hostname='.*'/hostname='$WRT_NAME'/g" $CFG_FILE
 
 #配置文件修改
 echo "CONFIG_PACKAGE_luci=y" >> ./.config
-echo "CONFIG_LUCI_LANG_zh_Hans=y" >> ./.config
 echo "CONFIG_PACKAGE_luci-theme-$WRT_THEME=y" >> ./.config
 echo "CONFIG_PACKAGE_luci-app-$WRT_THEME=y" >> ./.config
 echo "CONFIG_PACKAGE_luci-app-$WRT_THEME-config=y" >> ./.config
@@ -53,13 +52,10 @@ if [[ "${WRT_TARGET^^}" == *"QUALCOMMAX"* ]]; then
 fi
 
 # ==============================================================================
-# Tinh chỉnh tự động cho Link NN6000 v2 (LAN 192.168.5.0/24 + IPTV + Docker + BBR)
+# Tinh chỉnh tự động cho Link NN6000 v2 (IPTV + Docker + BBR + AdGuardHome + NSS)
 # ==============================================================================
 
-# 1. Ép IP LAN mặc định thành 192.168.5.1 (192.168.5.0/24)
-sed -i "s/192\.168\.[0-9]*\.1/192.168.5.1/g" ./package/base-files/files/bin/config_generate
-
-# 2. Cờ Multicast & Docker Cgroups vào kernel config của qualcommax
+# 1. Cờ Multicast & Docker Cgroups vào kernel config của qualcommax
 TARGET_KERNEL_CONFIG=$(find ./target/linux/qualcommax/ -maxdepth 1 -name "config-*" | sort -V | tail -n 1)
 if [ -f "$TARGET_KERNEL_CONFIG" ]; then
     echo ">>> Áp dụng cờ Multicast & Docker Cgroups vào $TARGET_KERNEL_CONFIG"
@@ -90,4 +86,74 @@ net.ipv4.conf.default.rp_filter=0
 net.core.default_qdisc=fq_codel
 net.ipv4.tcp_congestion_control=bbr
 net.netfilter.nf_conntrack_max=65536
+net.core.netdev_max_backlog=4096
+net.ipv4.tcp_mtu_probing=1
+net.ipv4.tcp_fastopen=3
+net.ipv4.tcp_slow_start_after_idle=0
+net.netfilter.nf_conntrack_tcp_timeout_established=3600
+vm.swappiness=10
+vm.vfs_cache_pressure=50
 EOF
+
+# 4. Tích hợp AdGuardHome bản Stable chính chủ mới nhất (linux_arm64)
+echo ">>> Tải AdGuardHome bản Stable mới nhất (linux_arm64)..."
+rm -rf /tmp/agh_dl && mkdir -p /tmp/agh_dl ./package/base-files/files/usr/bin ./package/base-files/files/etc/init.d
+curl -fsSL "https://github.com/AdguardTeam/AdGuardHome/releases/latest/download/AdGuardHome_linux_arm64.tar.gz" -o /tmp/agh_dl/agh.tar.gz
+tar -xzf /tmp/agh_dl/agh.tar.gz -C /tmp/agh_dl
+AGH_SRC=$(find /tmp/agh_dl -type f -name "AdGuardHome" | head -n 1)
+if [ -z "$AGH_SRC" ]; then
+    echo "ERROR: Không tìm thấy binary AdGuardHome trong gói tải về!" >&2
+    exit 1
+fi
+cp -f "$AGH_SRC" ./package/base-files/files/usr/bin/AdGuardHome
+chmod 755 ./package/base-files/files/usr/bin/AdGuardHome
+rm -rf /tmp/agh_dl
+
+cat > ./package/base-files/files/etc/init.d/AdGuardHome << 'EOF'
+#!/bin/sh /etc/rc.common
+
+USE_PROCD=1
+START=99
+STOP=10
+
+start_service() {
+    local AGH_BIN="/usr/bin/AdGuardHome"
+    local WORK_DIR="/etc/AdGuardHome"
+
+    if [ -x /opt/AdGuardHome/AdGuardHome ]; then
+        AGH_BIN="/opt/AdGuardHome/AdGuardHome"
+    fi
+    if [ -d /opt ] || [ -L /opt ]; then
+        WORK_DIR="/opt/AdGuardHome"
+    fi
+    mkdir -p "$WORK_DIR"
+
+    procd_open_instance
+    procd_set_param command "$AGH_BIN" --work-dir "$WORK_DIR" --no-check-update
+    procd_set_param env TZ=Asia/Ho_Chi_Minh
+    procd_set_param respawn "${respawn_threshold:-3600}" "${respawn_timeout:-5}" "${respawn_retry:-5}"
+    procd_set_param stdout 1
+    procd_set_param stderr 1
+    procd_close_instance
+}
+EOF
+chmod 755 ./package/base-files/files/etc/init.d/AdGuardHome
+
+# 5. Cấu hình mặc định khi flash mới (uci-defaults)
+mkdir -p ./package/base-files/files/etc/uci-defaults
+cat > ./package/base-files/files/etc/uci-defaults/99-nn6000-defaults << 'EOF'
+#!/bin/sh
+uci -q set system.@system[0].zonename='Asia/Ho_Chi_Minh'
+uci -q set system.@system[0].timezone='<+07>-7'
+uci -q commit system
+
+if [ -x /usr/bin/nss_freq ]; then
+    uci -q set nss_freq.settings=nss_freq
+    uci -q set nss_freq.settings.level='high'
+    uci -q commit nss_freq
+fi
+
+/etc/init.d/AdGuardHome enable 2>/dev/null || true
+exit 0
+EOF
+chmod 755 ./package/base-files/files/etc/uci-defaults/99-nn6000-defaults

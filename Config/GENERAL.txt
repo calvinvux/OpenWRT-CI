@@ -1,14 +1,13 @@
-successfully downloaded text file (SHA: 371ad33f70d319a64ce31088a298ba50e7b6b4e0)
 #科学插件调整
-CONFIG_PACKAGE_luci-app-homeproxy=y
+CONFIG_PACKAGE_luci-app-homeproxy=n
 #增加插件
-CONFIG_PACKAGE_luci-app-autoreboot=y
-CONFIG_PACKAGE_luci-app-gecoosac=y
+CONFIG_PACKAGE_luci-app-autoreboot=n
+CONFIG_PACKAGE_luci-app-gecoosac=n
 CONFIG_PACKAGE_luci-app-mini-diskmanager=y
-CONFIG_PACKAGE_luci-app-natmapt=y
+CONFIG_PACKAGE_luci-app-natmapt=n
 CONFIG_PACKAGE_luci-app-partexp=y
 CONFIG_PACKAGE_luci-app-samba4=y
-CONFIG_PACKAGE_luci-app-upnp=y
+CONFIG_PACKAGE_luci-app-upnp=n
 CONFIG_PACKAGE_luci-app-wolultra=y
 #删除插件
 CONFIG_PACKAGE_luci-app-attendedsysupgrade=n
@@ -23,8 +22,8 @@ CONFIG_TARGET_MULTI_PROFILE=y
 CONFIG_TARGET_PER_DEVICE_ROOTFS=y
 CONFIG_TARGET_ROOTFS_INITRAMFS=n
 #内核调整
-CONFIG_PACKAGE_kmod-ata-ahci=y
-CONFIG_PACKAGE_kmod-ata-core=y
+CONFIG_PACKAGE_kmod-ata-ahci=n
+CONFIG_PACKAGE_kmod-ata-core=n
 CONFIG_PACKAGE_kmod-bonding=y
 CONFIG_PACKAGE_kmod-dsa=y
 CONFIG_PACKAGE_kmod-dummy=y
@@ -50,12 +49,12 @@ CONFIG_PACKAGE_kmod-nft-queue=y
 CONFIG_PACKAGE_kmod-nft-socket=y
 CONFIG_PACKAGE_kmod-nft-tproxy=y
 CONFIG_PACKAGE_kmod-nft-xfrm=y
-CONFIG_PACKAGE_kmod-nvme=y
-CONFIG_PACKAGE_kmod-ovpn-backports=y
-CONFIG_PACKAGE_kmod-sound-core=y
+CONFIG_PACKAGE_kmod-nvme=n
+CONFIG_PACKAGE_kmod-ovpn-backports=n
+CONFIG_PACKAGE_kmod-sound-core=n
 CONFIG_PACKAGE_kmod-tun=y
 CONFIG_PACKAGE_kmod-usb3=y
-CONFIG_PACKAGE_kmod-usb-audio=y
+CONFIG_PACKAGE_kmod-usb-audio=n
 CONFIG_PACKAGE_kmod-usb-core=y
 CONFIG_PACKAGE_kmod-usb-dwc3=y
 CONFIG_PACKAGE_kmod-usb-ehci=y
@@ -86,7 +85,7 @@ CONFIG_PACKAGE_automount=y
 CONFIG_PACKAGE_blkid=y
 CONFIG_PACKAGE_cfdisk=y
 CONFIG_PACKAGE_cgdisk=y
-CONFIG_PACKAGE_coremark=y
+CONFIG_PACKAGE_coremark=n
 CONFIG_PACKAGE_cpufreq=y
 CONFIG_PACKAGE_curl=y
 CONFIG_PACKAGE_dmesg=y
@@ -99,7 +98,7 @@ CONFIG_PACKAGE_htop=y
 CONFIG_PACKAGE_iperf3=y
 CONFIG_PACKAGE_ip-full=y
 CONFIG_PACKAGE_libimobiledevice=y
-CONFIG_PACKAGE_libnvme=y
+CONFIG_PACKAGE_libnvme=n
 CONFIG_PACKAGE_lsblk=y
 CONFIG_PACKAGE_luci-base=y
 CONFIG_PACKAGE_luci-compat=y
@@ -109,7 +108,7 @@ CONFIG_PACKAGE_luci-lua-runtime=y
 CONFIG_PACKAGE_luci-proto-relay=y
 CONFIG_PACKAGE_mmc-utils=y
 CONFIG_PACKAGE_nand-utils=y
-CONFIG_PACKAGE_nvme-cli=y
+CONFIG_PACKAGE_nvme-cli=n
 CONFIG_PACKAGE_openssh-keygen=y
 CONFIG_PACKAGE_openssh-sftp-server=y
 CONFIG_PACKAGE_openssl-util=y
@@ -118,7 +117,7 @@ CONFIG_PACKAGE_sfdisk=y
 CONFIG_PACKAGE_sgdisk=y
 CONFIG_PACKAGE_smartmontools=y
 CONFIG_PACKAGE_smartmontools-drivedb=y
-CONFIG_PACKAGE_stuntman-client=y
+CONFIG_PACKAGE_stuntman-client=n
 CONFIG_PACKAGE_usb-modeswitch=y
 CONFIG_PACKAGE_usbmuxd=y
 CONFIG_PACKAGE_usbutils=y
@@ -138,7 +137,6 @@ CONFIG_PACKAGE_luci-app-dockerman=y
 CONFIG_PACKAGE_kmod-br-netfilter=y
 CONFIG_PACKAGE_kmod-ikconfig=y
 CONFIG_PACKAGE_kmod-nf-conntrack-netlink=y
-CONFIG_PACKAGE_kmod-veth=y
 
 # --- 2. VPN WIREGUARD + DUCKDNS + CHIA TẢI ĐA NHÂN ---
 # (kmod-wireguard đã có sẵn trong file gốc)
@@ -149,8 +147,8 @@ CONFIG_PACKAGE_ddns-scripts=y
 CONFIG_PACKAGE_ddns-scripts-services=y
 CONFIG_PACKAGE_luci-app-ddns=y
 
-# --- 3. ADGUARD HOME, CLOUDFLARE TUNNEL & MOSQUITTO MQTT (NATIVE) ---
-CONFIG_PACKAGE_adguardhome=y
+# --- 3. ADGUARD HOME (v1.0.0 đóng gói qua Settings.sh), CLOUDFLARE TUNNEL & MOSQUITTO MQTT ---
+CONFIG_PACKAGE_adguardhome=n
 CONFIG_PACKAGE_cloudflared=y
 CONFIG_PACKAGE_luci-app-cloudflared=y
 CONFIG_PACKAGE_mosquitto-ssl=y
@@ -165,11 +163,9 @@ CONFIG_PACKAGE_rclone=y
 CONFIG_PACKAGE_luci-app-rclone=y
 CONFIG_PACKAGE_rclone-ng=y
 CONFIG_PACKAGE_fuse-utils=y
-CONFIG_PACKAGE_kmod-fuse=y
 
 # --- 6. TIỆN ÍCH QUẢN TRỊ TỪ XA, WATCHCAT, BBR & CHẨN ĐOÁN MẠNG ---
 CONFIG_LUCI_LANG_en=y
-CONFIG_PACKAGE_openssh-sftp-server=y
 CONFIG_PACKAGE_luci-app-ttyd=y
 CONFIG_PACKAGE_watchcat=y
 CONFIG_PACKAGE_luci-app-watchcat=y
@@ -177,21 +173,13 @@ CONFIG_PACKAGE_kmod-tcp-bbr=y
 CONFIG_PACKAGE_ca-certificates=y
 CONFIG_PACKAGE_ca-bundle=y
 CONFIG_PACKAGE_luci-ssl=y
-CONFIG_PACKAGE_curl=y
 CONFIG_PACKAGE_wget-ssl=y
 CONFIG_PACKAGE_nano=y
 CONFIG_PACKAGE_jq=y
-CONFIG_PACKAGE_htop=y
 CONFIG_PACKAGE_tcpdump=y
 CONFIG_PACKAGE_ethtool=y
-CONFIG_PACKAGE_lsblk=y
 
-# --- 7. DRIVER USB ZIGBEE / THREAD CHO HOME ASSISTANT (Bỏ dấu # nếu dùng) ---
-# CONFIG_PACKAGE_kmod-usb-serial-cp210x=y
-# CONFIG_PACKAGE_kmod-usb-serial-ch341=y
-# CONFIG_PACKAGE_kmod-usb-acm=y
-
-# --- 8. ZIGBEE/THREAD USB DONGLE + HỖ TRỢ Ổ CỨNG NGOÀI (camera ghi hình) — ACTIVE ---
+# --- 7. ZIGBEE/THREAD USB DONGLE + HỖ TRỢ Ổ CỨNG NGOÀI (camera ghi hình) — ACTIVE ---
 CONFIG_PACKAGE_kmod-usb-serial-ch341=y
 CONFIG_PACKAGE_kmod-usb-serial-cp210x=y
 CONFIG_PACKAGE_kmod-usb-acm=y
@@ -199,3 +187,11 @@ CONFIG_PACKAGE_kmod-fs-ext4=y
 CONFIG_PACKAGE_kmod-fs-vfat=y
 CONFIG_PACKAGE_kmod-fs-ntfs3=y
 CONFIG_PACKAGE_kmod-fs-exfat=y
+
+# --- 8. ZRAM SWAP & QUẢN LÝ Ổ CỨNG USB (SSD / HDD / USB) ---
+CONFIG_PACKAGE_zram-swap=y
+CONFIG_PACKAGE_hd-idle=y
+CONFIG_PACKAGE_luci-app-hd-idle=y
+CONFIG_PACKAGE_hdparm=y
+CONFIG_PACKAGE_dosfstools=y
+CONFIG_PACKAGE_ntfs3-mount=y
